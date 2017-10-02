@@ -17,7 +17,7 @@ wiringpi
     sudo pip install wiringpi
 
 ## Functions
-helper_functions
+helper functions
 
     set_pwm_freq(freq_hz)
     set_pwm(channel,on,off)
