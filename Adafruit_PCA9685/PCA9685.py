@@ -68,7 +68,7 @@ def software_reset(i2c=None, **kwargs):
         i2c = I2C
 
     self.fd= wp.wiringPiI2CSetup(0x60);    
-    wp.wiringPiI2CWriteReg8(fd,0x06)# SWRST
+    wp.wiringPiI2CWriteReg8(self.fd,0x06)# SWRST
 
 
 class PCA9685(object):
@@ -93,12 +93,12 @@ class PCA9685(object):
         # Setup I2C interface for the device.
         
         self.set_all_pwm(0, 0)
-        wp.wiringPiI2CWriteReg8(fd, MODE1, OUTDRV);
-        wp.wiringPiI2CWriteReg8(fd, MODE1, ALLCALL);
+        wp.wiringPiI2CWriteReg8(self.fd, MODE1, OUTDRV);
+        wp.wiringPiI2CWriteReg8(self.fd, MODE1, ALLCALL);
         time.sleep(0.005)  # wait for oscillator
-        mode1 = wp.wiringPiI2CReadReg8(fd, MODE1);
+        mode1 = wp.wiringPiI2CReadReg8(self.fd, MODE1);
         mode1 = mode1 & ~SLEEP;  # wake up (reset sleep)
-        wp.wiringPiI2CWriteReg8(fd, MODE1, mode1);
+        wp.wiringPiI2CWriteReg8(self.fd, MODE1, mode1);
         time.sleep(0.005)  # wait for oscillator
         set_pwm_freq(1000)
 
@@ -112,27 +112,27 @@ class PCA9685(object):
         logger.debug('Estimated pre-scale: {0}'.format(prescaleval))
         prescale = int(math.floor(prescaleval + 0.5))
         logger.debug('Final pre-scale: {0}'.format(prescale))
-        oldmode = wp.wiringPiI2CReadReg8(fd, MODE1);
+        oldmode = wp.wiringPiI2CReadReg8(self.fd, MODE1);
         newmode = (oldmode & 0x7F) | 0x10;           
-        wp.wiringPiI2CWriteReg8(fd,MODE1, newmode)  # go to sleep
-        wp.wiringPiI2CWriteReg8(fd,PRESCALE, prescale)
-        wp.wiringPiI2CWriteReg8(fd,MODE1, oldmode)
+        wp.wiringPiI2CWriteReg8(self.fd,MODE1, newmode)  # go to sleep
+        wp.wiringPiI2CWriteReg8(self.fd,PRESCALE, prescale)
+        wp.wiringPiI2CWriteReg8(self.fd,MODE1, oldmode)
         time.sleep(0.005)
-        wp.wiringPiI2CWriteReg8(fd,MODE1, oldmode | 0x80)
+        wp.wiringPiI2CWriteReg8(self.fd,MODE1, oldmode | 0x80)
 
     def set_pwm(self, channel, on, off):
         """Sets a single PWM channel."""
-        wp.wiringPiI2CWriteReg8(fd,LED0_ON_L+4*channel, on & 0xFF)
-        wp.wiringPiI2CWriteReg8(fd,LED0_ON_H+4*channel, on >> 8)
-        wp.wiringPiI2CWriteReg8(fd,LED0_OFF_L+4*channel, off & 0xFF)
-        wp.wiringPiI2CWriteReg8(fd,LED0_OFF_H+4*channel, off >> 8)
+        wp.wiringPiI2CWriteReg8(self.fd,LED0_ON_L+4*channel, on & 0xFF)
+        wp.wiringPiI2CWriteReg8(self.fd,LED0_ON_H+4*channel, on >> 8)
+        wp.wiringPiI2CWriteReg8(self.fd,LED0_OFF_L+4*channel, off & 0xFF)
+        wp.wiringPiI2CWriteReg8(self.fd,LED0_OFF_H+4*channel, off >> 8)
 
     def set_all_pwm(self, on, off):
         """Sets all PWM channels."""
-        wp.wiringPiI2CWriteReg8(fd,ALL_LED_ON_L, on & 0xFF)
-        wp.wiringPiI2CWriteReg8(fd,ALL_LED_ON_H, on >> 8)
-        wp.wiringPiI2CWriteReg8(fd,ALL_LED_OFF_L, off & 0xFF)
-        wp.wiringPiI2CWriteReg8(fd,ALL_LED_OFF_H, off >> 8)
+        wp.wiringPiI2CWriteReg8(self.fd,ALL_LED_ON_L, on & 0xFF)
+        wp.wiringPiI2CWriteReg8(self.fd,ALL_LED_ON_H, on >> 8)
+        wp.wiringPiI2CWriteReg8(self.fd,ALL_LED_OFF_L, off & 0xFF)
+        wp.wiringPiI2CWriteReg8(self.fd,ALL_LED_OFF_H, off >> 8)
     def set_pin(self, pin,value):
         if value==0:
             set_pwm(pin,0,4096)
@@ -140,60 +140,60 @@ class PCA9685(object):
             set_pwm(pin,4096,0)
     
     def go_forward(self):
-        set_pin(en1Pin,LOW_PIN)
-        set_pin(en2Pin,HIGH_PIN)
+        set_pin(self.en1Pin,LOW_PIN)
+        set_pin(self.en2Pin,HIGH_PIN)
 
-        set_pin(en3Pin,LOW_PIN)
-        set_pin(en4Pin,HIGH_PIN)
+        set_pin(self.en3Pin,LOW_PIN)
+        set_pin(self.en4Pin,HIGH_PIN)
 
-        set_speed(enAPin,MAX_SPEED)
-        set_speed(enBPin,MAX_SPEED)
+        set_speed(self.enAPin,MAX_SPEED)
+        set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        set_speed(enAPin,nSpeed)
-        set_speed(enBPin,nSpeed)
+        set_speed(self.enAPin,nSpeed)
+        set_speed(self.enBPin,nSpeed)
 
     def go_back(self):
-        set_pin(en1Pin,HIGH_PIN)
-        set_pin(en2Pin,LOW_PIN)
+        set_pin(self.en1Pin,HIGH_PIN)
+        set_pin(self.en2Pin,LOW_PIN)
 
-        set_pin(en3Pin,HIGH_PIN)
-        set_pin(en4Pin,LOW_PIN)
+        set_pin(self.en3Pin,HIGH_PIN)
+        set_pin(self.en4Pin,LOW_PIN)
 
-        set_speed(enAPin,MAX_SPEED)
-        set_speed(enBPin,MAX_SPEED)
+        set_speed(self.enAPin,MAX_SPEED)
+        set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        set_speed(enAPin,nSpeed)
-        set_speed(enBPin,nSpeed)
+        set_speed(self.enAPin,nSpeed)
+        set_speed(self.enBPin,nSpeed)
         
     def go_left(self):
-        set_pin(en1Pin,HIGH_PIN)
-        set_pin(en2Pin,LOW_PIN)
+        set_pin(self.en1Pin,HIGH_PIN)
+        set_pin(self.en2Pin,LOW_PIN)
 
-        set_pin(en3Pin,LOW_PIN)
-        set_pin(en4Pin,HIGH_PIN)
+        set_pin(self.en3Pin,LOW_PIN)
+        set_pin(self.en4Pin,HIGH_PIN)
 
-        set_speed(enAPin,MAX_SPEED)
-        set_speed(enBPin,MAX_SPEED)
+        set_speed(self.enAPin,MAX_SPEED)
+        set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        set_speed(enAPin,nSpeed)
-        set_speed(enBPin,MAX_SPEED)
+        set_speed(self.enAPin,nSpeed)
+        set_speed(self.enBPin,MAX_SPEED)
         
     def go_right(self):
-        set_pin(en1Pin,LOW_PIN)
-        set_pin(en2Pin,HIGH_PIN)
+        set_pin(self.en1Pin,LOW_PIN)
+        set_pin(self.en2Pin,HIGH_PIN)
 
-        set_pin(en3Pin,HIGH_PIN)
-        set_pin(en4Pin,LOW_PIN)
+        set_pin(self.en3Pin,HIGH_PIN)
+        set_pin(self.en4Pin,LOW_PIN)
 
-        set_speed(enAPin,MAX_SPEED)
-        set_speed(enBPin,MAX_SPEED)
+        set_speed(self.enAPin,MAX_SPEED)
+        set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        set_speed(enAPin,MAX_SPEED)
-        set_speed(enBPin,nSpeed)
+        set_speed(self.enAPin,MAX_SPEED)
+        set_speed(self.enBPin,nSpeed)
     
     def stop(self):
-        setSpeed(enAPin, 0);
-        setSpeed(enBPin, 0);    
+        setSpeed(self.enAPin, 0);
+        setSpeed(self.enBPin, 0);    
 
 
     def set_speed(self, pin, speed):
@@ -205,9 +205,9 @@ class PCA9685(object):
 
 
     def set_normal_speed(self, speed):
-        nSpeed = speed;
+        self.nSpeed = speed;
 
     def on_buzz(self):
-        set_pwm(BuzzPin,0,2048)
+        set_pwm(self.BuzzPin,0,2048)
     def off_buzz(self):
-        setPin(BuzzPin,0)
+        setPin(self.BuzzPin,0)
