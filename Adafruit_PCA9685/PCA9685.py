@@ -1,5 +1,4 @@
-# Copyright (c) 2016 Adafruit Industries
-# Author: Tony DiCola
+# Author: Muhriddin Ismoilov
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -49,26 +48,16 @@ INVRT              = 0x10
 OUTDRV             = 0x04
 
 LOW_PIN = 0
-HIGH_PIN=1
+HIGH_PIN = 1
 
 MAX_SPEED   =   	250
 NOR_SPEED   =   	120
 MIN_SPEED   =   	0
 
-MOTOR_START_DELAY	=10 
+MOTOR_START_DELAY	= 10 
 
 logger = logging.getLogger(__name__)
 
-
-def software_reset(i2c=None, **kwargs):
-    """Sends a software reset (SWRST) command to all servo drivers on the bus."""
-    # Setup I2C interface for device 0x00 to talk to all of them.
-    if i2c is None:
-        import Adafruit_GPIO.I2C as I2C
-        i2c = I2C
-
-    self.fd= wp.wiringPiI2CSetup(0x60);    
-    wp.wiringPiI2CWriteReg8(self.fd,0x06)# SWRST
 
 
 class PCA9685(object):
