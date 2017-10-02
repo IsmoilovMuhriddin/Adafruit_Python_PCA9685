@@ -11,7 +11,7 @@ To install the library from source (recommended) run the following commands on a
     cd Adafruit_Python_PCA9685
     sudo python setup.py install
 
-##Requirements
+## Requirements
 wiringpi
 
     sudo pip install wiringpi
