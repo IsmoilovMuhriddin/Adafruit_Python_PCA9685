@@ -210,4 +210,4 @@ class PCA9685(object):
     def on_buzz(self):
         self.set_pwm(self.BuzzPin,0,2048)
     def off_buzz(self):
-        self.setPin(self.BuzzPin,0)
+        self.set_pin(self.BuzzPin,0)
