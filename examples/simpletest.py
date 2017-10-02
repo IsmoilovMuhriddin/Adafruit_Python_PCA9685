@@ -11,12 +11,14 @@ import rasp_car_PCA9685 as pca
 #logging.basicConfig(level=logging.DEBUG)
 
 # Initialise the PCA9685 using the default address (0x40).
-pwm = pca.PCA9685()
+pca9685 = pca.PCA9685()
 
 
 while True:
     # Move servo on channel O between extremes.
-    pwm.set_pwm(0, 0, 1000)
-    time.sleep(1)
-    pwm.set_pwm(0, 0, 500)
-    time.sleep(1)
+    pca9685.go_forward();
+	time.sleep(20);
+	pca9685.stop();
+	pca9685.go_back();
+	time.sleep(20);
+	pca9685.stop();
