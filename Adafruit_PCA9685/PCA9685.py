@@ -149,8 +149,8 @@ class PCA9685(object):
         self.set_speed(self.enAPin,MAX_SPEED)
         self.set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        self.set_speed(self.enAPin,nSpeed)
-        self.set_speed(self.enBPin,nSpeed)
+        self.set_speed(self.enAPin,self.nSpeed)
+        self.set_speed(self.enBPin,self.nSpeed)
 
     def go_back(self):
         self.set_pin(self.en1Pin,HIGH_PIN)
@@ -162,8 +162,8 @@ class PCA9685(object):
         self.set_speed(self.enAPin,MAX_SPEED)
         self.set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        self.set_speed(self.enAPin,nSpeed)
-        self.set_speed(self.enBPin,nSpeed)
+        self.set_speed(self.enAPin,self.nSpeed)
+        self.set_speed(self.enBPin,self.nSpeed)
         
     def go_left(self):
         self.set_pin(self.en1Pin,HIGH_PIN)
@@ -175,7 +175,7 @@ class PCA9685(object):
         self.set_speed(self.enAPin,MAX_SPEED)
         self.set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        self.set_speed(self.enAPin,nSpeed)
+        self.set_speed(self.enAPin,self.nSpeed)
         self.set_speed(self.enBPin,MAX_SPEED)
         
     def go_right(self):
@@ -189,7 +189,7 @@ class PCA9685(object):
         self.set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
         self.set_speed(self.enAPin,MAX_SPEED)
-        self.set_speed(self.enBPin,nSpeed)
+        self.set_speed(self.enBPin,self.nSpeed)
     
     def stop(self):
         self.setSpeed(self.enAPin, 0);
