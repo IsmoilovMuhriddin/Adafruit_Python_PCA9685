@@ -8,7 +8,7 @@ except ImportError:
 
 from setuptools import setup, find_packages
 
-classifiers = ['Development Status :: 4 - Beta',
+classifiers = ['Development Status :: 3 - Beta',
                'Operating System :: POSIX :: Linux',
                'License :: OSI Approved :: MIT License',
                'Intended Audience :: Developers',
@@ -17,14 +17,13 @@ classifiers = ['Development Status :: 4 - Beta',
                'Topic :: Software Development',
                'Topic :: System :: Hardware']
 
-setup(name              = 'Adafruit_PCA9685',
-      version           = '1.0.1',
-      author            = 'Tony DiCola',
-      author_email      = 'tdicola@adafruit.com',
-      description       = 'Python code to use the PCA9685 PWM servo/LED controller with a Raspberry Pi or BeagleBone Black.',
+setup(name              = 'rasp_car_PCA9685',
+      version           = '1.0.0',
+      author            = 'Muhriddin Ismoilov',
+      author_email      = 'ismoilovmuh1996@gmail.com',
+      description       = 'Python code to use the PCA9685 PWM for Motor control of Smart Car',
       license           = 'MIT',
       classifiers       = classifiers,
-      url               = 'https://github.com/adafruit/Adafruit_Python_PCA9685/',
-      dependency_links  = ['https://github.com/adafruit/Adafruit_Python_GPIO/tarball/master#egg=Adafruit-GPIO-0.6.5'],
-      install_requires  = ['Adafruit-GPIO>=0.6.5'],
+      url               = 'https://github.com/IsmoilovMuhriddin/rasp_car_PCA9685/',
+      install_requires  = ['wiringpi'],
       packages          = find_packages())
