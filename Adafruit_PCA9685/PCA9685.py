@@ -48,6 +48,11 @@ ALLCALL            = 0x01
 INVRT              = 0x10
 OUTDRV             = 0x04
 
+MAX_SPEED   =   	250
+NOR_SPEED   =   	120
+MIN_SPEED   =   	0
+
+MOTOR_START_DELAY	=10 
 
 logger = logging.getLogger(__name__)
 
@@ -112,3 +117,12 @@ class PCA9685(object):
         self._device.write8(ALL_LED_ON_H, on >> 8)
         self._device.write8(ALL_LED_OFF_L, off & 0xFF)
         self._device.write8(ALL_LED_OFF_H, off >> 8)
+    def set_pin(self, pin,value):
+        if value==0:
+            set_pwm(pin,0,4096)
+        if value==1:
+            set_pwm(pin,4096,0)
+    def on_buzz(self):
+        set_pwm(BuzzPin,0,2048)
+    def off_buzz(self):
+        setPin(BuzzPin,0)
