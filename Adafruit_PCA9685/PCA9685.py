@@ -87,7 +87,7 @@ class PCA9685(object):
         self.en4Pin = 4
         self.BuzzPin= 8
         self.fd= wp.wiringPiI2CSetup(0x60);
-        init_start()
+        self.init_start()
     
     def init_start(self):
         # Setup I2C interface for the device.
