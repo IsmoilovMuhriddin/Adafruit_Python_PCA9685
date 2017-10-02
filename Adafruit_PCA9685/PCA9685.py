@@ -135,9 +135,9 @@ class PCA9685(object):
         wp.wiringPiI2CWriteReg8(self.fd,ALL_LED_OFF_H, off >> 8)
     def set_pin(self, pin,value):
         if value==0:
-            set_pwm(pin,0,4096)
+            self.set_pwm(pin,0,4096)
         if value==1:
-            set_pwm(pin,4096,0)
+            self.set_pwm(pin,4096,0)
     
     def go_forward(self):
         self.set_pin(self.en1Pin,LOW_PIN)
@@ -192,8 +192,8 @@ class PCA9685(object):
         self.set_speed(self.enBPin,self.nSpeed)
     
     def stop(self):
-        self.setSpeed(self.enAPin, 0);
-        self.setSpeed(self.enBPin, 0);    
+        self.set_speed(self.enAPin, 0);
+        self.set_speed(self.enBPin, 0);    
 
 
     def set_speed(self, pin, speed):
