@@ -48,6 +48,9 @@ ALLCALL            = 0x01
 INVRT              = 0x10
 OUTDRV             = 0x04
 
+LOW_PIN = 0
+HIGH_PIN=1
+
 MAX_SPEED   =   	250
 NOR_SPEED   =   	120
 MIN_SPEED   =   	0
@@ -72,6 +75,17 @@ class PCA9685(object):
 
     def __init__(self, address=PCA9685_ADDRESS, i2c=None, **kwargs):
         """Initialize the PCA9685."""
+        # private variables of class
+        #self.fd
+        self.nSpeed = NOR_SPEED
+        self.enAPin = 0
+        self.en1Pin = 1
+        self.en2Pin = 2
+        self.enBPin = 5
+        self.en3Pin = 3
+        self.en4Pin = 4
+        self.BuzzPin= 8
+
         # Setup I2C interface for the device.
         if i2c is None:
             import Adafruit_GPIO.I2C as I2C
@@ -85,13 +99,15 @@ class PCA9685(object):
         mode1 = mode1 & ~SLEEP  # wake up (reset sleep)
         self._device.write8(MODE1, mode1)
         time.sleep(0.005)  # wait for oscillator
+        set_pwm_freq(1000)
+    
 
     def set_pwm_freq(self, freq_hz):
         """Set the PWM frequency to the provided value in hertz."""
         prescaleval = 25000000.0    # 25MHz
         prescaleval /= 4096.0       # 12-bit
         prescaleval /= float(freq_hz)
-        prescaleval -= 1.0
+        prescaleval -= 0.5
         logger.debug('Setting PWM frequency to {0} Hz'.format(freq_hz))
         logger.debug('Estimated pre-scale: {0}'.format(prescaleval))
         prescale = int(math.floor(prescaleval + 0.5))
@@ -122,6 +138,75 @@ class PCA9685(object):
             set_pwm(pin,0,4096)
         if value==1:
             set_pwm(pin,4096,0)
+    
+    def go_forward(self):
+        set_pin(en1Pin,LOW_PIN)
+        set_pin(en2Pin,HIGH_PIN)
+
+        set_pin(en3Pin,LOW_PIN)
+        set_pin(en4Pin,HIGH_PIN)
+
+        set_speed(enAPin,MAX_SPEED)
+        set_speed(enBPin,MAX_SPEED)
+        time.sleep(MOTOR_START_DELAY)
+        set_speed(enAPin,nSpeed)
+        set_speed(enBPin,nSpeed)
+
+    def go_back(self):
+        set_pin(en1Pin,HIGH_PIN)
+        set_pin(en2Pin,LOW_PIN)
+
+        set_pin(en3Pin,HIGH_PIN)
+        set_pin(en4Pin,LOW_PIN)
+
+        set_speed(enAPin,MAX_SPEED)
+        set_speed(enBPin,MAX_SPEED)
+        time.sleep(MOTOR_START_DELAY)
+        set_speed(enAPin,nSpeed)
+        set_speed(enBPin,nSpeed)
+        
+    def go_left(self):
+        set_pin(en1Pin,HIGH_PIN)
+        set_pin(en2Pin,LOW_PIN)
+
+        set_pin(en3Pin,LOW_PIN)
+        set_pin(en4Pin,HIGH_PIN)
+
+        set_speed(enAPin,MAX_SPEED)
+        set_speed(enBPin,MAX_SPEED)
+        time.sleep(MOTOR_START_DELAY)
+        set_speed(enAPin,nSpeed)
+        set_speed(enBPin,MAX_SPEED)
+        
+    def go_right(self):
+        set_pin(en1Pin,LOW_PIN)
+        set_pin(en2Pin,HIGH_PIN)
+
+        set_pin(en3Pin,HIGH_PIN)
+        set_pin(en4Pin,LOW_PIN)
+
+        set_speed(enAPin,MAX_SPEED)
+        set_speed(enBPin,MAX_SPEED)
+        time.sleep(MOTOR_START_DELAY)
+        set_speed(enAPin,MAX_SPEED)
+        set_speed(enBPin,nSpeed)
+    
+    def stop(self):
+        setSpeed(enAPin, 0);
+        setSpeed(enBPin, 0);    
+
+
+    def set_speed(self, pin, speed):
+        if (speed < 0):
+            speed = 0
+        if (speed > 255):
+            speed = 255
+        set_pwm(pin, 0, speed*16)    
+
+
+    def set_normal_speed(self, speed):
+        nSpeed = speed;
+
     def on_buzz(self):
         set_pwm(BuzzPin,0,2048)
     def off_buzz(self):
