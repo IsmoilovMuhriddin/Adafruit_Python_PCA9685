@@ -192,8 +192,8 @@ class PCA9685(object):
         self.set_speed(self.enBPin,nSpeed)
     
     def stop(self):
-        self.setSpeed(self.enAPin, 0);
-        self.setSpeed(self.enBPin, 0);    
+        self.set_speed(self.enAPin, 0);
+        self.set_speed(self.enBPin, 0);    
 
 
     def set_speed(self, pin, speed):
