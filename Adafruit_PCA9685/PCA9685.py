@@ -100,7 +100,7 @@ class PCA9685(object):
         mode1 = mode1 & ~SLEEP;  # wake up (reset sleep)
         wp.wiringPiI2CWriteReg8(self.fd, MODE1, mode1);
         time.sleep(0.005)  # wait for oscillator
-        set_pwm_freq(1000)
+        self.set_pwm_freq(1000)
 
     def set_pwm_freq(self, freq_hz):
         """Set the PWM frequency to the provided value in hertz."""
@@ -140,60 +140,60 @@ class PCA9685(object):
             set_pwm(pin,4096,0)
     
     def go_forward(self):
-        set_pin(self.en1Pin,LOW_PIN)
-        set_pin(self.en2Pin,HIGH_PIN)
+        self.set_pin(self.en1Pin,LOW_PIN)
+        self.set_pin(self.en2Pin,HIGH_PIN)
 
-        set_pin(self.en3Pin,LOW_PIN)
-        set_pin(self.en4Pin,HIGH_PIN)
+        self.set_pin(self.en3Pin,LOW_PIN)
+        self.set_pin(self.en4Pin,HIGH_PIN)
 
-        set_speed(self.enAPin,MAX_SPEED)
-        set_speed(self.enBPin,MAX_SPEED)
+        self.set_speed(self.enAPin,MAX_SPEED)
+        self.set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        set_speed(self.enAPin,nSpeed)
-        set_speed(self.enBPin,nSpeed)
+        self.set_speed(self.enAPin,nSpeed)
+        self.set_speed(self.enBPin,nSpeed)
 
     def go_back(self):
-        set_pin(self.en1Pin,HIGH_PIN)
-        set_pin(self.en2Pin,LOW_PIN)
+        self.set_pin(self.en1Pin,HIGH_PIN)
+        self.set_pin(self.en2Pin,LOW_PIN)
 
-        set_pin(self.en3Pin,HIGH_PIN)
-        set_pin(self.en4Pin,LOW_PIN)
+        self.set_pin(self.en3Pin,HIGH_PIN)
+        self.set_pin(self.en4Pin,LOW_PIN)
 
-        set_speed(self.enAPin,MAX_SPEED)
-        set_speed(self.enBPin,MAX_SPEED)
+        self.set_speed(self.enAPin,MAX_SPEED)
+        self.set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        set_speed(self.enAPin,nSpeed)
-        set_speed(self.enBPin,nSpeed)
+        self.set_speed(self.enAPin,nSpeed)
+        self.set_speed(self.enBPin,nSpeed)
         
     def go_left(self):
-        set_pin(self.en1Pin,HIGH_PIN)
-        set_pin(self.en2Pin,LOW_PIN)
+        self.set_pin(self.en1Pin,HIGH_PIN)
+        self.set_pin(self.en2Pin,LOW_PIN)
 
-        set_pin(self.en3Pin,LOW_PIN)
-        set_pin(self.en4Pin,HIGH_PIN)
+        self.set_pin(self.en3Pin,LOW_PIN)
+        self.set_pin(self.en4Pin,HIGH_PIN)
 
-        set_speed(self.enAPin,MAX_SPEED)
-        set_speed(self.enBPin,MAX_SPEED)
+        self.set_speed(self.enAPin,MAX_SPEED)
+        self.set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        set_speed(self.enAPin,nSpeed)
-        set_speed(self.enBPin,MAX_SPEED)
+        self.set_speed(self.enAPin,nSpeed)
+        self.set_speed(self.enBPin,MAX_SPEED)
         
     def go_right(self):
-        set_pin(self.en1Pin,LOW_PIN)
-        set_pin(self.en2Pin,HIGH_PIN)
+        self.set_pin(self.en1Pin,LOW_PIN)
+        self.set_pin(self.en2Pin,HIGH_PIN)
 
-        set_pin(self.en3Pin,HIGH_PIN)
-        set_pin(self.en4Pin,LOW_PIN)
+        self.set_pin(self.en3Pin,HIGH_PIN)
+        self.set_pin(self.en4Pin,LOW_PIN)
 
-        set_speed(self.enAPin,MAX_SPEED)
-        set_speed(self.enBPin,MAX_SPEED)
+        self.set_speed(self.enAPin,MAX_SPEED)
+        self.set_speed(self.enBPin,MAX_SPEED)
         time.sleep(MOTOR_START_DELAY)
-        set_speed(self.enAPin,MAX_SPEED)
-        set_speed(self.enBPin,nSpeed)
+        self.set_speed(self.enAPin,MAX_SPEED)
+        self.set_speed(self.enBPin,nSpeed)
     
     def stop(self):
-        setSpeed(self.enAPin, 0);
-        setSpeed(self.enBPin, 0);    
+        self.setSpeed(self.enAPin, 0);
+        self.setSpeed(self.enBPin, 0);    
 
 
     def set_speed(self, pin, speed):
@@ -201,13 +201,13 @@ class PCA9685(object):
             speed = 0
         if (speed > 255):
             speed = 255
-        set_pwm(pin, 0, speed*16)    
+        self.set_pwm(pin, 0, speed*16)    
 
 
     def set_normal_speed(self, speed):
         self.nSpeed = speed;
 
     def on_buzz(self):
-        set_pwm(self.BuzzPin,0,2048)
+        self.set_pwm(self.BuzzPin,0,2048)
     def off_buzz(self):
-        setPin(self.BuzzPin,0)
+        self.setPin(self.BuzzPin,0)
