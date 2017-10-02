@@ -22,7 +22,7 @@ from __future__ import division
 import logging
 import time
 import math
-
+import  wiringpi as wp
 
 # Registers/etc:
 PCA9685_ADDRESS    = 0x40
@@ -66,8 +66,9 @@ def software_reset(i2c=None, **kwargs):
     if i2c is None:
         import Adafruit_GPIO.I2C as I2C
         i2c = I2C
-    self._device = i2c.get_i2c_device(0x00, **kwargs)
-    self._device.writeRaw8(0x06)  # SWRST
+
+    self.fd= wp.wiringPiI2CSetup(0x60);    
+    wp.wiringPiI2CWriteReg8(fd,0x06)# SWRST
 
 
 class PCA9685(object):
@@ -85,22 +86,21 @@ class PCA9685(object):
         self.en3Pin = 3
         self.en4Pin = 4
         self.BuzzPin= 8
-
+        self.fd= wp.wiringPiI2CSetup(0x60);
+        init_start()
+    
+    def init_start():
         # Setup I2C interface for the device.
-        if i2c is None:
-            import Adafruit_GPIO.I2C as I2C
-            i2c = I2C
-        self._device = i2c.get_i2c_device(address, **kwargs)
+        
         self.set_all_pwm(0, 0)
-        self._device.write8(MODE2, OUTDRV)
-        self._device.write8(MODE1, ALLCALL)
+        wp.wiringPiI2CWriteReg8(fd, MODE1, OUTDRV);
+        wp.wiringPiI2CWriteReg8(fd, MODE1, ALLCALL);
         time.sleep(0.005)  # wait for oscillator
-        mode1 = self._device.readU8(MODE1)
-        mode1 = mode1 & ~SLEEP  # wake up (reset sleep)
-        self._device.write8(MODE1, mode1)
+        mode1 = wp.wiringPiI2CReadReg8(fd, MODE1);
+        mode1 = mode1 & ~SLEEP;  # wake up (reset sleep)
+        wp.wiringPiI2CWriteReg8(fd, MODE1, mode1);
         time.sleep(0.005)  # wait for oscillator
         set_pwm_freq(1000)
-    
 
     def set_pwm_freq(self, freq_hz):
         """Set the PWM frequency to the provided value in hertz."""
@@ -112,27 +112,27 @@ class PCA9685(object):
         logger.debug('Estimated pre-scale: {0}'.format(prescaleval))
         prescale = int(math.floor(prescaleval + 0.5))
         logger.debug('Final pre-scale: {0}'.format(prescale))
-        oldmode = self._device.readU8(MODE1);
-        newmode = (oldmode & 0x7F) | 0x10    # sleep
-        self._device.write8(MODE1, newmode)  # go to sleep
-        self._device.write8(PRESCALE, prescale)
-        self._device.write8(MODE1, oldmode)
+        oldmode = wp.wiringPiI2CReadReg8(fd, MODE1);
+        newmode = (oldmode & 0x7F) | 0x10;           
+        wp.wiringPiI2CWriteReg8(fd,MODE1, newmode)  # go to sleep
+        wp.wiringPiI2CWriteReg8(fd,PRESCALE, prescale)
+        wp.wiringPiI2CWriteReg8(fd,MODE1, oldmode)
         time.sleep(0.005)
-        self._device.write8(MODE1, oldmode | 0x80)
+        wp.wiringPiI2CWriteReg8(fd,MODE1, oldmode | 0x80)
 
     def set_pwm(self, channel, on, off):
         """Sets a single PWM channel."""
-        self._device.write8(LED0_ON_L+4*channel, on & 0xFF)
-        self._device.write8(LED0_ON_H+4*channel, on >> 8)
-        self._device.write8(LED0_OFF_L+4*channel, off & 0xFF)
-        self._device.write8(LED0_OFF_H+4*channel, off >> 8)
+        wp.wiringPiI2CWriteReg8(fd,LED0_ON_L+4*channel, on & 0xFF)
+        wp.wiringPiI2CWriteReg8(fd,LED0_ON_H+4*channel, on >> 8)
+        wp.wiringPiI2CWriteReg8(fd,LED0_OFF_L+4*channel, off & 0xFF)
+        wp.wiringPiI2CWriteReg8(fd,LED0_OFF_H+4*channel, off >> 8)
 
     def set_all_pwm(self, on, off):
         """Sets all PWM channels."""
-        self._device.write8(ALL_LED_ON_L, on & 0xFF)
-        self._device.write8(ALL_LED_ON_H, on >> 8)
-        self._device.write8(ALL_LED_OFF_L, off & 0xFF)
-        self._device.write8(ALL_LED_OFF_H, off >> 8)
+        wp.wiringPiI2CWriteReg8(fd,ALL_LED_ON_L, on & 0xFF)
+        wp.wiringPiI2CWriteReg8(fd,ALL_LED_ON_H, on >> 8)
+        wp.wiringPiI2CWriteReg8(fd,ALL_LED_OFF_L, off & 0xFF)
+        wp.wiringPiI2CWriteReg8(fd,ALL_LED_OFF_H, off >> 8)
     def set_pin(self, pin,value):
         if value==0:
             set_pwm(pin,0,4096)
