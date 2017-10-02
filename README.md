@@ -1,4 +1,4 @@
-# Adafruit Python PCA9685
+#  rasp_car_PCA9685
 Python code to use the PCA9685 PWM for Motor control of Smart Car
 
 ## Installation
@@ -35,3 +35,5 @@ car control
     set_normal_speed(speed)
     on_buzz()
     off_buzz()
+## Special Thanks to [Adafruit-PCA9685](https://github.com/adafruit/Adafruit_Python_PCA9685)
+[Adafruit](https://github.com/adafruit)
