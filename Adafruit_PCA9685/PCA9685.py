@@ -89,7 +89,7 @@ class PCA9685(object):
         self.fd= wp.wiringPiI2CSetup(0x60);
         init_start()
     
-    def init_start():
+    def init_start(self):
         # Setup I2C interface for the device.
         
         self.set_all_pwm(0, 0)
