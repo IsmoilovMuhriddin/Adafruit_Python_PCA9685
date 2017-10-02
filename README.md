@@ -7,8 +7,8 @@ To install the library from source (recommended) run the following commands on a
 
     sudo apt-get install git build-essential python-dev
     cd ~
-    git clone https://github.com/IsmoilovMuhriddin/Adafruit_Python_PCA9685.git
-    cd Adafruit_Python_PCA9685
+    git clone https://github.com/IsmoilovMuhriddin/rasp_car_PCA9685.git
+    cd rasp_car_PCA9685
     sudo python setup.py install
 
 ## Requirements
