@@ -17,13 +17,15 @@ wiringpi
     sudo pip install wiringpi
 
 ## Functions
-helper functions
+helper_functions
+
     set_pwm_freq(freq_hz)
     set_pwm(channel,on,off)
     set_all_pwm(on,off)
     set_pin(pin,value)
-
+    
 car control
+
     go_forward()
     go_back()
     go_left()
