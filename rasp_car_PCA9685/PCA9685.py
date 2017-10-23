@@ -128,57 +128,48 @@ class PCA9685(object):
         if value==1:
             self.set_pwm(pin,4096,0)
     
-    def go_forward(self):
+    def go_forward(self,speed_cur=self.nSpeed):
         self.set_pin(self.en1Pin,LOW_PIN)
         self.set_pin(self.en2Pin,HIGH_PIN)
 
         self.set_pin(self.en3Pin,LOW_PIN)
         self.set_pin(self.en4Pin,HIGH_PIN)
 
-        self.set_speed(self.enAPin,MAX_SPEED)
-        self.set_speed(self.enBPin,MAX_SPEED)
-        time.sleep(MOTOR_START_DELAY)
-        self.set_speed(self.enAPin,self.nSpeed)
-        self.set_speed(self.enBPin,self.nSpeed)
-
-    def go_back(self):
+        self.set_speed(self.enAPin,speed_cur)
+        self.set_speed(self.enBPin,speed_cur)
+       
+    def go_back(self,speed_cur=self.nSpeed):
         self.set_pin(self.en1Pin,HIGH_PIN)
         self.set_pin(self.en2Pin,LOW_PIN)
 
         self.set_pin(self.en3Pin,HIGH_PIN)
         self.set_pin(self.en4Pin,LOW_PIN)
 
-        self.set_speed(self.enAPin,MAX_SPEED)
-        self.set_speed(self.enBPin,MAX_SPEED)
-        time.sleep(MOTOR_START_DELAY)
-        self.set_speed(self.enAPin,self.nSpeed)
-        self.set_speed(self.enBPin,self.nSpeed)
+        self.set_speed(self.enAPin,speed_cur)
+        self.set_speed(self.enBPin,speed_cur)
         
-    def go_left(self):
+        
+    def go_left(self,speed_cur=self.nSpeed):
         self.set_pin(self.en1Pin,HIGH_PIN)
         self.set_pin(self.en2Pin,LOW_PIN)
 
         self.set_pin(self.en3Pin,LOW_PIN)
         self.set_pin(self.en4Pin,HIGH_PIN)
 
-        self.set_speed(self.enAPin,MAX_SPEED)
-        self.set_speed(self.enBPin,MAX_SPEED)
-        time.sleep(MOTOR_START_DELAY)
-        self.set_speed(self.enAPin,self.nSpeed)
-        self.set_speed(self.enBPin,MAX_SPEED)
+        self.set_speed(self.enAPin,speed_cur)
+        self.set_speed(self.enBPin,speed_cur)
         
-    def go_right(self):
+        
+    def go_right(self,speed_cur=self.nSpeed):
         self.set_pin(self.en1Pin,LOW_PIN)
         self.set_pin(self.en2Pin,HIGH_PIN)
 
         self.set_pin(self.en3Pin,HIGH_PIN)
         self.set_pin(self.en4Pin,LOW_PIN)
 
-        self.set_speed(self.enAPin,MAX_SPEED)
-        self.set_speed(self.enBPin,MAX_SPEED)
-        time.sleep(MOTOR_START_DELAY)
-        self.set_speed(self.enAPin,MAX_SPEED)
-        self.set_speed(self.enBPin,self.nSpeed)
+        self.set_speed(self.enAPin,speed_cur)
+        self.set_speed(self.enBPin,speed_cur)
+        
     
     def stop(self):
         self.set_speed(self.enAPin, 0);
